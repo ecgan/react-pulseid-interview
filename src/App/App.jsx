@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout } from 'antd'
 import styles from './App.module.css'
+import Content from './Content/Content'
 
 const App = () => {
   return (
@@ -14,7 +15,7 @@ const App = () => {
           </h1>
         </Layout.Header>
         <Layout.Content>
-          <span>hello world</span>
+          <Content />
         </Layout.Content>
       </Layout>
     </div>
