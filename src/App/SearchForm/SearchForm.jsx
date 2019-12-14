@@ -1,19 +1,12 @@
-import { Form, Input, Spin } from 'antd'
+import { Form } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
-import useFlickr from '../_shared/useFlickr'
-import PhotoList from './PhotoList/PhotoList'
+import DebounceInput from '../_shared/DebounceInput/DebounceInput'
+import PhotoSearch from './PhotoSearch/PhotoSearch'
 
 const SearchForm = (props) => {
   const { form } = props
   const { getFieldDecorator } = form
-  const { loading, error, data } = useFlickr()
-
-  if (error) {
-    return <span>Error</span>
-  }
-
-  const photos = (data && data.photos.photo) || []
 
   return (
     <div>
@@ -25,18 +18,14 @@ const SearchForm = (props) => {
         >
           {
             getFieldDecorator('text')(
-              <Input />
+              <DebounceInput />
             )
           }
         </Form.Item>
       </Form>
-      <Spin
-        spinning={loading}
-      >
-        <PhotoList
-          photos={photos}
-        />
-      </Spin>
+      <PhotoSearch
+        query={form.getFieldsValue()}
+      />
     </div>
   )
 }
