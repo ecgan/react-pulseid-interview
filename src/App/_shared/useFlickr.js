@@ -36,15 +36,20 @@ const useFlickr = (query) => {
       type: 'fire'
     })
 
-    const req = query.text && query.text.trim()
-      ? flickr.photos.search({
-        text: query.text,
+    const hasNoQuery = (!query.text || !query.text.trim()) && !query.min_taken_date && !query.max_taken_date
+
+    const req = hasNoQuery
+      ? flickr.photos.getRecent({
         per_page: 30,
         page: 1
       })
-      : flickr.photos.getRecent({
+      : flickr.photos.search({
+        text: query.text && query.text.trim(),
+        min_taken_date: query.min_taken_date && query.min_taken_date.startOf('day').unix(),
+        max_taken_date: query.max_taken_date && query.max_taken_date.endOf('day').unix(),
         per_page: 30,
-        page: 1
+        page: 1,
+        extras: 'date_taken'
       })
 
     req.then((res) => {
