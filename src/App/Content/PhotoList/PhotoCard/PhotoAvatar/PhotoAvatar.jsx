@@ -8,12 +8,14 @@ const PhotoAvatar = (props) => {
   return (
     <Avatar
       src={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_s.jpg`}
+      shape='square'
+      size={75}
     />
   )
 }
 
 PhotoAvatar.propTypes = {
-  photo: PropTypes.object
+  photo: PropTypes.object.isRequired
 }
 
 export default PhotoAvatar
