@@ -47,7 +47,9 @@ const SearchForm = (props) => {
             <Col
               span={12}
             >
-              <Form.Item>
+              <Form.Item
+                style={{ marginBottom: 0 }}
+              >
                 {
                   getFieldDecorator('min_taken_date')(
                     <DatePicker
@@ -63,7 +65,9 @@ const SearchForm = (props) => {
             <Col
               span={12}
             >
-              <Form.Item>
+              <Form.Item
+                style={{ marginBottom: 0 }}
+              >
                 {
                   getFieldDecorator('max_taken_date')(
                     <DatePicker
