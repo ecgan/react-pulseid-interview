@@ -4,24 +4,57 @@ import flickr from './flickr'
 const initialState = {
   loading: true,
   error: null,
-  data: null
+  data: null,
+  query: null
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'fire':
-      return initialState
+      if (action.query.page > 1) {
+        return {
+          loading: true,
+          error: null,
+          data: state.data,
+          query: action.query
+        }
+      }
+
+      return {
+        loading: true,
+        error: null,
+        data: null,
+        query: action.query
+      }
+
     case 'error':
       return {
         loading: false,
         error: action.error,
-        data: null
+        data: state.data,
+        query: state.query
       }
     case 'success':
+      if (action.data.photos.page > 1) {
+        const newData = {
+          ...action.data
+        }
+
+        newData.photos.photo.unshift(...state.data.photos.photo)
+
+        return {
+          loading: false,
+          error: null,
+          data: newData,
+          query: state.query
+        }
+      }
+
       return {
         loading: false,
         error: null,
-        data: action.data
+        data: action.data,
+        query: state.query
       }
     default:
       return state
@@ -31,24 +64,35 @@ const reducer = (state, action) => {
 const useFlickr = (query) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  const text = query.text && query.text.trim()
+  const minTakenDate = query.min_taken_date && query.min_taken_date.startOf('day').unix()
+  const maxTakenDate = query.max_taken_date && query.max_taken_date.startOf('day').unix()
+  const page = query.page
+
   useEffect(() => {
     dispatch({
-      type: 'fire'
+      type: 'fire',
+      query: {
+        text,
+        minTakenDate,
+        maxTakenDate,
+        page
+      }
     })
 
-    const hasNoQuery = (!query.text || !query.text.trim()) && !query.min_taken_date && !query.max_taken_date
+    const hasNoQuery = !text && !minTakenDate && !maxTakenDate
 
     const req = hasNoQuery
       ? flickr.photos.getRecent({
         per_page: 30,
-        page: 1
+        page: page
       })
       : flickr.photos.search({
-        text: query.text && query.text.trim(),
-        min_taken_date: query.min_taken_date && query.min_taken_date.startOf('day').unix(),
-        max_taken_date: query.max_taken_date && query.max_taken_date.endOf('day').unix(),
+        text: text,
+        min_taken_date: minTakenDate,
+        max_taken_date: maxTakenDate,
         per_page: 30,
-        page: 1,
+        page: page,
         extras: 'date_taken'
       })
 
@@ -67,7 +111,7 @@ const useFlickr = (query) => {
     return () => {
       req.abort()
     }
-  }, [query])
+  }, [text, minTakenDate, maxTakenDate, page])
 
   return state
 }

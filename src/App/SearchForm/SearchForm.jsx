@@ -1,4 +1,4 @@
-import { Col, DatePicker, Form, Row } from 'antd'
+import { Col, DatePicker, Form, Input, Row } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import DebounceInput from '../_shared/DebounceInput/DebounceInput'
@@ -22,13 +22,22 @@ const disableEndDate = (startDate) => (current) => {
 
 const SearchForm = (props) => {
   const { form } = props
-  const { getFieldDecorator, getFieldValue } = form
+  const { getFieldDecorator, getFieldValue, setFieldsValue } = form
 
   return (
     <div>
       <Form
         layout='vertical'
       >
+        {
+          getFieldDecorator('page', {
+            initialValue: 1
+          })(
+            <Input
+              type='hidden'
+            />
+          )
+        }
         <Form.Item
           label='Search'
         >
@@ -85,6 +94,13 @@ const SearchForm = (props) => {
       </Form>
       <PhotoSearch
         query={form.getFieldsValue()}
+        onLoadMore={() => {
+          const page = getFieldValue('page')
+
+          setFieldsValue({
+            page: page + 1
+          })
+        }}
       />
     </div>
   )
@@ -94,4 +110,18 @@ SearchForm.propTypes = {
   form: PropTypes.object
 }
 
-export default Form.create()(SearchForm)
+export default Form.create({
+  onValuesChange: (props, changedValues, allValues) => {
+    const { form } = props
+
+    if (
+      (changedValues.text || changedValues.min_taken_date || changedValues.max_taken_date) &&
+      allValues.page > 1
+    ) {
+      form.setFieldsValue({
+        ...changedValues,
+        page: 1
+      })
+    }
+  }
+})(SearchForm)

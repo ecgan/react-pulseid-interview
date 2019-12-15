@@ -8,15 +8,21 @@ const PhotoCard = (props) => {
   const { photo } = props
 
   return (
-    <Card
-      className={styles.photoCard}
-      hoverable
-      cover={
-        <PhotoAvatar
-          photo={photo}
-        />
-      }
-    />
+    <a
+      href={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`}
+      target='_blank'
+      rel='noopener noreferrer'
+    >
+      <Card
+        className={styles.photoCard}
+        hoverable
+        cover={
+          <PhotoAvatar
+            photo={photo}
+          />
+        }
+      />
+    </a>
   )
 }
 
