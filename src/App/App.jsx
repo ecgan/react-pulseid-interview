@@ -1,7 +1,7 @@
 import React from 'react'
 import { BackTop, Layout } from 'antd'
 import styles from './App.module.css'
-import SearchForm from './SearchForm/SearchForm'
+import Content from './Content/Content'
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
           </h1>
         </Layout.Header>
         <Layout.Content>
-          <SearchForm />
+          <Content />
           <BackTop />
         </Layout.Content>
       </Layout>

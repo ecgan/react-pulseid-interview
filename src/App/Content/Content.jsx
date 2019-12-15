@@ -20,7 +20,7 @@ const disableEndDate = (startDate) => (current) => {
   return current < startDate
 }
 
-const SearchForm = (props) => {
+const Content = (props) => {
   const { form } = props
   const { getFieldDecorator, getFieldValue, setFieldsValue } = form
 
@@ -106,7 +106,7 @@ const SearchForm = (props) => {
   )
 }
 
-SearchForm.propTypes = {
+Content.propTypes = {
   form: PropTypes.object
 }
 
@@ -124,4 +124,4 @@ export default Form.create({
       })
     }
   }
-})(SearchForm)
+})(Content)
