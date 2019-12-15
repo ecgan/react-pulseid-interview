@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import useFlickr from '../../_shared/useFlickr'
+import useFlickr from '../../_shared/useFlickr/useFlickr'
 import PhotoList from './PhotoList/PhotoList'
 
 const PhotoSearch = (props) => {
