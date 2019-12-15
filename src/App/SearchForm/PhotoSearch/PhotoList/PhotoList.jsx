@@ -1,10 +1,10 @@
-import { List, Spin, Col, Row } from 'antd'
+import { Col, List, Result, Row, Spin } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import PhotoCard from './PhotoCard/PhotoCard'
 
 const PhotoList = (props) => {
-  const { photos, loading } = props
+  const { photos, loading, error } = props
 
   return (
     <List
@@ -33,13 +33,23 @@ const PhotoList = (props) => {
             </Col>
           </Row>
       }
+      {
+        (error) &&
+          <Result
+            status='error'
+            title='Request Failed'
+            subTitle='Please try again later or contact system admin.'
+            style={{ padding: 0 }}
+          />
+      }
     </List>
   )
 }
 
 PhotoList.propTypes = {
   photos: PropTypes.array.isRequired,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  error: PropTypes.object
 }
 
 export default PhotoList

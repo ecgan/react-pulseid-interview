@@ -31,7 +31,7 @@ const reducer = (state, action) => {
       return {
         loading: false,
         error: action.error,
-        data: null,
+        data: state.data,
         query: state.query
       }
     case 'success':

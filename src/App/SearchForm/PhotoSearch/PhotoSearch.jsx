@@ -1,4 +1,3 @@
-import { Result } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -9,31 +8,25 @@ const PhotoSearch = (props) => {
   const { query, onLoadMore } = props
   const { loading, error, data } = useFlickr(query)
 
-  if (error) {
-    return (
-      <Result
-        status='error'
-        title='Request Failed'
-        subTitle='Please try again later or contact system admin.'
-      />
-    )
-  }
-
   const photos = (data && data.photos.photo) || []
 
   return (
     <InfiniteScroll
       pageStart={1}
       loadMore={onLoadMore}
-      hasMore={
-        !loading &&
-        query.page === data.photos.page &&
-        data.photos.page < data.photos.pages
-      }
+      hasMore={(
+        !loading && (
+          data && (
+            query.page === data.photos.page &&
+            data.photos.page < data.photos.pages
+          )
+        )
+      )}
     >
       <PhotoList
         photos={photos}
         loading={loading}
+        error={error}
       />
     </InfiniteScroll>
   )
