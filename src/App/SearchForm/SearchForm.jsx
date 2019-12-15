@@ -94,9 +94,11 @@ const SearchForm = (props) => {
       </Form>
       <PhotoSearch
         query={form.getFieldsValue()}
-        onLoadMore={(page) => {
+        onLoadMore={() => {
+          const page = getFieldValue('page')
+
           setFieldsValue({
-            page: page
+            page: page + 1
           })
         }}
       />
@@ -108,4 +110,18 @@ SearchForm.propTypes = {
   form: PropTypes.object
 }
 
-export default Form.create()(SearchForm)
+export default Form.create({
+  onValuesChange: (props, changedValues, allValues) => {
+    const { form } = props
+
+    if (
+      (changedValues.text || changedValues.min_taken_date || changedValues.max_taken_date) &&
+      allValues.page > 1
+    ) {
+      form.setFieldsValue({
+        ...changedValues,
+        page: 1
+      })
+    }
+  }
+})(SearchForm)
