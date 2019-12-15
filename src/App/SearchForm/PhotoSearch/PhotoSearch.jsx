@@ -1,11 +1,12 @@
-import { Result, Spin } from 'antd'
+import { Result } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
+import InfiniteScroll from 'react-infinite-scroller'
 import useFlickr from '../../_shared/useFlickr'
 import PhotoList from './PhotoList/PhotoList'
 
 const PhotoSearch = (props) => {
-  const { query } = props
+  const { query, onLoadMore } = props
   const { loading, error, data } = useFlickr(query)
 
   if (error) {
@@ -21,18 +22,26 @@ const PhotoSearch = (props) => {
   const photos = (data && data.photos.photo) || []
 
   return (
-    <Spin
-      spinning={loading}
+    <InfiniteScroll
+      pageStart={1}
+      loadMore={onLoadMore}
+      hasMore={
+        !loading &&
+        query.page === data.photos.page &&
+        data.photos.page < data.photos.pages
+      }
+      loader={<div className='loader' key={0}>Loading ...</div>}
     >
       <PhotoList
         photos={photos}
       />
-    </Spin>
+    </InfiniteScroll>
   )
 }
 
 PhotoSearch.propTypes = {
-  query: PropTypes.object
+  query: PropTypes.object,
+  onLoadMore: PropTypes.func
 }
 
 export default PhotoSearch
