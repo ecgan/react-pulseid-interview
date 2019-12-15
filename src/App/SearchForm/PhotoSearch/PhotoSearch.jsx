@@ -30,10 +30,10 @@ const PhotoSearch = (props) => {
         query.page === data.photos.page &&
         data.photos.page < data.photos.pages
       }
-      loader={<div className='loader' key={0}>Loading ...</div>}
     >
       <PhotoList
         photos={photos}
+        loading={loading}
       />
     </InfiniteScroll>
   )
