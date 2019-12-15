@@ -54,7 +54,7 @@ const SearchForm = (props) => {
             gutter={16}
           >
             <Col
-              span={12}
+              xs={12}
             >
               <Form.Item
                 style={{ marginBottom: 0 }}
@@ -72,7 +72,7 @@ const SearchForm = (props) => {
               </Form.Item>
             </Col>
             <Col
-              span={12}
+              xs={12}
             >
               <Form.Item
                 style={{ marginBottom: 0 }}

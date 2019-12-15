@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'antd'
+import { BackTop, Layout } from 'antd'
 import styles from './App.module.css'
 import SearchForm from './SearchForm/SearchForm'
 
@@ -16,6 +16,7 @@ const App = () => {
         </Layout.Header>
         <Layout.Content>
           <SearchForm />
+          <BackTop />
         </Layout.Content>
       </Layout>
     </div>
