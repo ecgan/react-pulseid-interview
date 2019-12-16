@@ -2,8 +2,8 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import App from './App'
 
-test('renders Hello World', () => {
+test('renders React Image Gallery', () => {
   const { getByText } = render(<App />)
-  const text = getByText('Hello World')
+  const text = getByText('React Image Gallery')
   expect(text).toBeInTheDocument()
 })
