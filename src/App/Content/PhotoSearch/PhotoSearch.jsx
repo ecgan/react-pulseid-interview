@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import useFlickrNew from '../../_shared/useFlickr/useFlickr'
+import useFlickr from '../../_shared/useFlickr/useFlickr'
 import PhotoList from './PhotoList/PhotoList'
 
 const PhotoSearch = (props) => {
   const { query } = props
-  const { loading, error, data, fetchMore } = useFlickrNew(query)
+  const { loading, error, data, fetchMore } = useFlickr(query)
 
   const photos = (data && data.photos.photo) || []
 
