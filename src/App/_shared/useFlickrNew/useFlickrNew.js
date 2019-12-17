@@ -3,7 +3,6 @@ import flickr from '../flickr'
 
 const getInitialState = (query) => {
   return {
-    status: 'RUNNING',
     query: {
       ...query,
       page: 1
@@ -18,7 +17,6 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_NEW_QUERY':
       return {
-        status: 'RUNNING',
         query: {
           ...action.query,
           page: 1
@@ -30,7 +28,6 @@ const reducer = (state, action) => {
 
     case 'FETCH_ERROR':
       return {
-        status: 'READY',
         query: state.query,
         loading: false,
         error: action.error,
@@ -48,7 +45,6 @@ const reducer = (state, action) => {
       }
 
       return {
-        status: 'READY',
         query: state.query,
         loading: false,
         error: null,
@@ -58,7 +54,6 @@ const reducer = (state, action) => {
 
     case 'REQUEST_FETCH_MORE':
       return {
-        status: 'RUNNING',
         query: {
           ...state.query,
           page: state.query.page + 1
@@ -69,7 +64,7 @@ const reducer = (state, action) => {
       }
 
     default:
-      return state
+      throw new Error(`Unknown action.type ${action.type} in reducer.`)
   }
 }
 
@@ -94,7 +89,7 @@ const useFlickrNew = (formQuery) => {
   }, [query])
 
   useEffect(() => {
-    if (state.status !== 'RUNNING') {
+    if (!state.loading) {
       return
     }
 
@@ -126,7 +121,7 @@ const useFlickrNew = (formQuery) => {
     return () => {
       req && req.abort()
     }
-  }, [state.status, state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page])
+  }, [state.loading, state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page])
 
   const fetchMore = useCallback(() => {
     dispatch({
