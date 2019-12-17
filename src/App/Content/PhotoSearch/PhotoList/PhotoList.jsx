@@ -1,4 +1,4 @@
-import { Col, List, Result, Row, Spin } from 'antd'
+import { Col, List, Result, Row, Spin, Empty } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import PhotoCard from './PhotoCard/PhotoCard'
@@ -41,6 +41,10 @@ const PhotoList = (props) => {
             subTitle='Please try again later or contact system admin.'
             style={{ padding: 0 }}
           />
+      }
+      {
+        (!loading && photos.length === 0) &&
+          <Empty />
       }
     </List>
   )

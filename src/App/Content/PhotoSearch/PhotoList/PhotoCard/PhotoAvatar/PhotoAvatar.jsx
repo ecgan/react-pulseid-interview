@@ -10,6 +10,8 @@ const PhotoAvatar = (props) => {
       src={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_s.jpg`}
       shape='square'
       size={75}
+      alt={photo.title}
+      title={photo.title}
     />
   )
 }
