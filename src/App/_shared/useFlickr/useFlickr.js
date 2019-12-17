@@ -22,9 +22,16 @@ const useFlickr = (formQuery) => {
     })
   }, [dispatch])
 
+  const refetch = useCallback(() => {
+    dispatch({
+      type: 'REFETCH'
+    })
+  }, [dispatch])
+
   return {
     ...state,
-    fetchMore
+    fetchMore,
+    refetch
   }
 }
 

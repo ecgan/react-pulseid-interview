@@ -62,6 +62,14 @@ const reducer = (state, action) => {
         data: state.data
       }
 
+    case 'REFETCH':
+      return {
+        query: state.query,
+        loading: true,
+        error: null,
+        data: state.data
+      }
+
     default:
       throw new Error(`Unknown action.type ${action.type} in reducer.`)
   }
