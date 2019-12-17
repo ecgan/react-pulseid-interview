@@ -1,26 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import useFlickr from '../../_shared/useFlickr/useFlickr'
+import useFlickrNew from '../../_shared/useFlickrNew/useFlickrNew'
 import PhotoList from './PhotoList/PhotoList'
 
 const PhotoSearch = (props) => {
-  const { query, onLoadMore } = props
-  const { loading, error, data } = useFlickr(query)
+  const { query } = props
+  const { loading, error, data, fetchMore } = useFlickrNew(query)
 
   const photos = (data && data.photos.photo) || []
 
   return (
     <InfiniteScroll
       pageStart={1}
-      loadMore={onLoadMore}
+      loadMore={fetchMore}
       hasMore={(
-        !loading && (
-          data && (
-            query.page === data.photos.page &&
-            data.photos.page < data.photos.pages
-          )
-        )
+        !loading &&
+        (data && (data.photos.page < data.photos.pages))
       )}
     >
       <PhotoList
@@ -33,8 +29,7 @@ const PhotoSearch = (props) => {
 }
 
 PhotoSearch.propTypes = {
-  query: PropTypes.object,
-  onLoadMore: PropTypes.func
+  query: PropTypes.object
 }
 
 export default PhotoSearch
