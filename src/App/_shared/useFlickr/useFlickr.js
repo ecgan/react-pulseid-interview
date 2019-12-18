@@ -1,11 +1,22 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useReducer } from 'react'
+import getQuery from './getQuery'
+import reducer from './reducer'
 import useFlickrEffect from './useFlickrEffect'
-import useFlickrReducer from './useFlickrReducer'
-import useQueryMemo from './useQueryMemo'
 
 const useFlickr = (formQuery) => {
-  const query = useQueryMemo(formQuery)
-  const [state, dispatch] = useFlickrReducer(query)
+  const query = useMemo(() => {
+    return getQuery(formQuery.text, formQuery.min_taken_date, formQuery.max_taken_date)
+  }, [formQuery.max_taken_date, formQuery.min_taken_date, formQuery.text])
+
+  const [state, dispatch] = useReducer(reducer, {
+    query: {
+      ...query,
+      page: 1
+    },
+    loading: true,
+    error: null,
+    data: null
+  })
 
   useEffect(() => {
     dispatch({

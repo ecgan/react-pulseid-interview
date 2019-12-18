@@ -1,17 +1,3 @@
-import { useReducer } from 'react'
-
-const getInitialState = (query) => {
-  return {
-    query: {
-      ...query,
-      page: 1
-    },
-    loading: true,
-    error: null,
-    data: null
-  }
-}
-
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_NEW_QUERY':
@@ -75,8 +61,4 @@ const reducer = (state, action) => {
   }
 }
 
-const useFlickrReducer = (query) => {
-  return useReducer(reducer, getInitialState(query))
-}
-
-export default useFlickrReducer
+export default reducer
