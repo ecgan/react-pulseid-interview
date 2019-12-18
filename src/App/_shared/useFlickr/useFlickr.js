@@ -30,7 +30,21 @@ const useFlickr = (formQuery) => {
       return
     }
 
-    return callFlickrEffect(state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page, dispatch)
+    const successFn = (res) => {
+      dispatch({
+        type: 'FETCH_SUCCESS',
+        data: res.body
+      })
+    }
+
+    const errorFn = (err) => {
+      dispatch({
+        type: 'FETCH_ERROR',
+        error: err
+      })
+    }
+
+    return callFlickrEffect(state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page, successFn, errorFn)
   }, [state.loading, state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page, dispatch])
 
   const fetchMore = useCallback(() => {
