@@ -1,14 +1,13 @@
-import { Col, List, Result, Row, Spin, Empty } from 'antd'
+import { Empty, List } from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
 import PhotoCard from './PhotoCard/PhotoCard'
 
 const PhotoList = (props) => {
-  const { photos, loading, error } = props
+  const { photos } = props
 
   return (
     <List
-      loading={loading && photos.length === 0}
       style={{ width: 257, margin: 'auto' }}
       grid={{ gutter: 16, column: 3 }}
       dataSource={photos}
@@ -23,27 +22,7 @@ const PhotoList = (props) => {
       }}
     >
       {
-        (loading && photos.length > 0) &&
-          <Row>
-            <Col
-              span={24}
-              style={{ textAlign: 'center' }}
-            >
-              <Spin />
-            </Col>
-          </Row>
-      }
-      {
-        (error) &&
-          <Result
-            status='error'
-            title='Request Failed'
-            subTitle='Please try again later or contact system admin.'
-            style={{ padding: 0 }}
-          />
-      }
-      {
-        (!loading && photos.length === 0) &&
+        (photos.length === 0) &&
           <Empty />
       }
     </List>
@@ -51,9 +30,7 @@ const PhotoList = (props) => {
 }
 
 PhotoList.propTypes = {
-  photos: PropTypes.array.isRequired,
-  loading: PropTypes.bool,
-  error: PropTypes.object
+  photos: PropTypes.array.isRequired
 }
 
 export default PhotoList
