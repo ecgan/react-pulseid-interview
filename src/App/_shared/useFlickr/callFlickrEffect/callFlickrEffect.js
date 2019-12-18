@@ -2,7 +2,7 @@ import flickr from './flickr'
 
 const perPage = 30
 
-const callFlickrEffect = (text, minTakenDate, maxTakenDate, page, dispatch) => {
+const callFlickrEffect = (text, minTakenDate, maxTakenDate, page, successFn, errorFn) => {
   const req = (!text && !minTakenDate && !maxTakenDate)
     ? flickr.photos.getRecent({
       page: page,
@@ -16,17 +16,9 @@ const callFlickrEffect = (text, minTakenDate, maxTakenDate, page, dispatch) => {
       per_page: perPage
     })
 
-  req.then((res) => {
-    dispatch({
-      type: 'FETCH_SUCCESS',
-      data: res.body
-    })
-  }).catch((err) => {
-    dispatch({
-      type: 'FETCH_ERROR',
-      error: err
-    })
-  })
+  req
+    .then(successFn)
+    .catch(errorFn)
 
   return () => {
     req && req.abort()
