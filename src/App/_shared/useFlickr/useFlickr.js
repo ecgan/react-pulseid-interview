@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import getQuery from './getQuery'
 import reducer from './reducer'
-import useFlickrEffect from './useFlickrEffect'
+import callFlickrEffect from './callFlickrEffect/callFlickrEffect'
 
 const useFlickr = (formQuery) => {
   const query = useMemo(() => {
@@ -25,7 +25,13 @@ const useFlickr = (formQuery) => {
     })
   }, [dispatch, query])
 
-  useFlickrEffect(state, dispatch)
+  useEffect(() => {
+    if (!state.loading) {
+      return
+    }
+
+    return callFlickrEffect(state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page, dispatch)
+  }, [state.loading, state.query.text, state.query.min_taken_date, state.query.max_taken_date, state.query.page, dispatch])
 
   const fetchMore = useCallback(() => {
     dispatch({

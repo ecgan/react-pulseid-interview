@@ -1,5 +1,5 @@
 import Flickr from 'flickr-sdk'
-import config from './config'
+import config from '../../config'
 
 const flickr = new Flickr(config.flickrApiKey)
 
