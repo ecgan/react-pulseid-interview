@@ -11,14 +11,13 @@ const photos = [
 
 const searchFlickr = (options) => {
   const { page, per_page: perPage } = options
+  const startIndex = (page - 1) * perPage
+  const endIndex = (page * perPage) - 1
+  const result = photos.filter((el, idx) => {
+    return idx >= startIndex && idx <= endIndex
+  })
 
-  return new Promise((resolve, reject) => {
-    const startIndex = (page - 1) * perPage
-    const endIndex = (page * perPage) - 1
-    const result = photos.filter((el, idx) => {
-      return idx >= startIndex && idx <= endIndex
-    })
-
+  const promise = new Promise((resolve, reject) => {
     resolve({
       body: {
         photos: {
@@ -32,6 +31,10 @@ const searchFlickr = (options) => {
       }
     })
   })
+
+  promise.abort = () => {}
+
+  return promise
 }
 
 export default searchFlickr

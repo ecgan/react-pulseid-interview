@@ -17,7 +17,7 @@ const getRecentFlickr = (options) => {
     return idx >= startIndex && idx <= endIndex
   })
 
-  return new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     resolve({
       body: {
         photos: {
@@ -31,6 +31,10 @@ const getRecentFlickr = (options) => {
       }
     })
   })
+
+  promise.abort = () => {}
+
+  return promise
 }
 
 export default getRecentFlickr
