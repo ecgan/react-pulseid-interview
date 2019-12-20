@@ -1,8 +1,15 @@
-import callFlickrEffect from './callFlickrEffect'
-import flickr from './flickr'
 import moment from 'moment'
+import callFlickrEffect from './callFlickrEffect'
+import getRecentFlickr from './getRecentFlickr'
+import searchFlickr from './searchFlickr'
 
-jest.mock('./flickr')
+jest.mock('./getRecentFlickr')
+jest.mock('./searchFlickr')
+
+beforeEach(() => {
+  getRecentFlickr.mockClear()
+  searchFlickr.mockClear()
+})
 
 test('callFlickrEffect with no text, minTakenDate and maxTakenDate should call getRecent method', (done) => {
   const text = undefined
@@ -10,7 +17,7 @@ test('callFlickrEffect with no text, minTakenDate and maxTakenDate should call g
   const maxTakenDate = undefined
   const page = 1
 
-  flickr.photos.getRecent.mockImplementation(() => {
+  getRecentFlickr.mockImplementation(() => {
     return Promise.resolve({
       body: {
         photos: {
@@ -28,8 +35,11 @@ test('callFlickrEffect with no text, minTakenDate and maxTakenDate should call g
     })
   })
 
-  expect.assertions(1)
+  expect.assertions(2)
   callFlickrEffect(text, minTakenDate, maxTakenDate, page, (res) => {
+    const mockFlickr = getRecentFlickr
+    expect(mockFlickr).toHaveBeenCalledTimes(1)
+
     expect(res.body.stat).toBe('ok')
     done()
   })
@@ -41,7 +51,7 @@ test('callFlickrEffect with text only should call search method', (done) => {
   const maxTakenDate = undefined
   const page = 1
 
-  flickr.photos.search.mockImplementation(() => {
+  searchFlickr.mockImplementation(() => {
     return Promise.resolve({
       body: {
         photos: {
@@ -59,8 +69,11 @@ test('callFlickrEffect with text only should call search method', (done) => {
     })
   })
 
-  expect.assertions(1)
+  expect.assertions(2)
   callFlickrEffect(text, minTakenDate, maxTakenDate, page, (res) => {
+    const mockFlickr = searchFlickr
+    expect(mockFlickr).toHaveBeenCalledTimes(1)
+
     expect(res.body.stat).toBe('ok')
     done()
   })
@@ -72,7 +85,7 @@ test('callFlickrEffect with minTakenDate only should call search method', (done)
   const maxTakenDate = undefined
   const page = 1
 
-  flickr.photos.search.mockImplementation(() => {
+  searchFlickr.mockImplementation(() => {
     return Promise.resolve({
       body: {
         photos: {
@@ -90,8 +103,11 @@ test('callFlickrEffect with minTakenDate only should call search method', (done)
     })
   })
 
-  expect.assertions(1)
+  expect.assertions(2)
   callFlickrEffect(text, minTakenDate, maxTakenDate, page, (res) => {
+    const mockFlickr = searchFlickr
+    expect(mockFlickr).toHaveBeenCalledTimes(1)
+
     expect(res.body.stat).toBe('ok')
     done()
   })
@@ -103,7 +119,7 @@ test('callFlickrEffect with maxTakenDate only should call search method', (done)
   const maxTakenDate = moment('2019-12-12')
   const page = 1
 
-  flickr.photos.search.mockImplementation(() => {
+  searchFlickr.mockImplementation(() => {
     return Promise.resolve({
       body: {
         photos: {
@@ -121,8 +137,11 @@ test('callFlickrEffect with maxTakenDate only should call search method', (done)
     })
   })
 
-  expect.assertions(1)
+  expect.assertions(2)
   callFlickrEffect(text, minTakenDate, maxTakenDate, page, (res) => {
+    const mockFlickr = searchFlickr
+    expect(mockFlickr).toHaveBeenCalledTimes(1)
+
     expect(res.body.stat).toBe('ok')
     done()
   })
